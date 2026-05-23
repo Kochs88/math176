@@ -1,582 +1,973 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MATH 176 Instructor Addendum Interactive Module</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f4f7fb;
-      color: #222;
-      line-height: 1.6;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MATH 176 – Business Calculus Interactive Addendum</title>
 
-    header {
-      background: linear-gradient(135deg, #7b1e3a, #b33b5f);
-      color: white;
-      padding: 2rem;
-      text-align: center;
-    }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    header h1 {
-      margin: 0;
-      font-size: 2.2rem;
-    }
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-    header p {
-      max-width: 900px;
-      margin: 1rem auto 0;
-      font-size: 1.05rem;
-    }
+:root{
+  --primary:#7b1e3a;
+  --secondary:#b33b5f;
+  --accent:#f5d6df;
+  --light:#f7f9fc;
+  --dark:#1d2433;
+  --gold:#f7d774;
+  --success:#2e8b57;
+  --shadow:0 10px 30px rgba(0,0,0,0.08);
+  --radius:20px;
+}
 
-    .container {
-      width: 92%;
-      max-width: 1200px;
-      margin: 2rem auto;
-    }
+body{
+  font-family:'Inter',sans-serif;
+  background:#eef3f9;
+  color:var(--dark);
+  line-height:1.7;
+}
 
-    .tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
+header{
+  background:
+    linear-gradient(rgba(0,0,0,0.25),rgba(0,0,0,0.25)),
+    linear-gradient(135deg,var(--primary),var(--secondary));
+  color:white;
+  padding:4rem 1.5rem;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
 
-    .tab-btn {
-      background: #d8e3f2;
-      border: none;
-      padding: 0.9rem 1.2rem;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: 0.3s;
-      font-weight: bold;
-    }
+header::before{
+  content:"∫  d/dx  lim  f(x)";
+  position:absolute;
+  font-size:5rem;
+  opacity:0.08;
+  top:10px;
+  left:20px;
+  font-weight:800;
+}
 
-    .tab-btn:hover,
-    .tab-btn.active {
-      background: #7b1e3a;
-      color: white;
-    }
+header h1{
+  font-size:clamp(2rem,5vw,3.5rem);
+  margin-bottom:1rem;
+  font-weight:800;
+}
 
-    .tab-content {
-      display: none;
-      background: white;
-      padding: 2rem;
-      border-radius: 16px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-      animation: fade 0.4s ease-in-out;
-    }
+header p{
+  max-width:900px;
+  margin:auto;
+  font-size:1.08rem;
+}
 
-    .tab-content.active {
-      display: block;
-    }
+.hero-buttons{
+  margin-top:2rem;
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:1rem;
+}
 
-    @keyframes fade {
-      from {opacity: 0; transform: translateY(10px);} 
-      to {opacity: 1; transform: translateY(0);} 
-    }
+.hero-buttons a{
+  text-decoration:none;
+  padding:0.9rem 1.5rem;
+  border-radius:999px;
+  font-weight:700;
+  transition:0.3s;
+}
 
-    h2 {
-      color: #7b1e3a;
-      margin-top: 0;
-    }
+.btn-primary{
+  background:white;
+  color:var(--primary);
+}
 
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
-    }
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow);
+}
 
-    .card {
-      background: #f8fafc;
-      border-left: 6px solid #7b1e3a;
-      border-radius: 12px;
-      padding: 1rem;
-    }
+.btn-outline{
+  border:2px solid white;
+  color:white;
+}
 
-    .highlight {
-      background: #fff4cc;
-      padding: 0.25rem 0.4rem;
-      border-radius: 5px;
-      font-weight: bold;
-    }
+.btn-outline:hover{
+  background:white;
+  color:var(--primary);
+}
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-      overflow-x: auto;
-    }
+nav{
+  position:sticky;
+  top:0;
+  z-index:999;
+  background:white;
+  box-shadow:0 3px 15px rgba(0,0,0,0.05);
+}
 
-    th, td {
-      border: 1px solid #ccc;
-      padding: 0.75rem;
-      text-align: left;
-    }
+.nav-container{
+  max-width:1300px;
+  margin:auto;
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:0.75rem;
+  padding:1rem;
+}
 
-    th {
-      background: #7b1e3a;
-      color: white;
-    }
+.nav-btn{
+  border:none;
+  background:#edf2f7;
+  padding:0.85rem 1.25rem;
+  border-radius:999px;
+  cursor:pointer;
+  font-weight:600;
+  transition:0.3s;
+}
 
-    .quiz-question {
-      background: #f7f9fc;
-      border-radius: 12px;
-      padding: 1rem;
-      margin-bottom: 1.5rem;
-    }
+.nav-btn:hover,
+.nav-btn.active{
+  background:var(--primary);
+  color:white;
+}
 
-    .quiz-question button {
-      display: block;
-      width: 100%;
-      margin-top: 0.5rem;
-      padding: 0.8rem;
-      border: none;
-      border-radius: 8px;
-      background: #dbe7f5;
-      cursor: pointer;
-      text-align: left;
-      transition: 0.2s;
-    }
+.container{
+  max-width:1300px;
+  margin:2rem auto 4rem;
+  padding:0 1rem;
+}
 
-    .quiz-question button:hover {
-      background: #c4d7ee;
-    }
+.section{
+  display:none;
+  animation:fade 0.35s ease;
+}
 
-    .feedback {
-      margin-top: 0.7rem;
-      font-weight: bold;
-    }
+.section.active{
+  display:block;
+}
 
-    .timeline {
-      border-left: 4px solid #7b1e3a;
-      margin: 2rem 0;
-      padding-left: 1.5rem;
-    }
+@keyframes fade{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
 
-    .timeline-item {
-      margin-bottom: 1.5rem;
-      position: relative;
-    }
+.glass-card{
+  background:rgba(255,255,255,0.9);
+  backdrop-filter:blur(8px);
+  border-radius:var(--radius);
+  padding:2rem;
+  box-shadow:var(--shadow);
+  margin-bottom:2rem;
+}
 
-    .timeline-item::before {
-      content: "";
-      position: absolute;
-      left: -1.85rem;
-      top: 0.3rem;
-      width: 14px;
-      height: 14px;
-      background: #7b1e3a;
-      border-radius: 50%;
-    }
+.section-title{
+  color:var(--primary);
+  margin-bottom:1rem;
+  font-size:2rem;
+  font-weight:800;
+}
 
-    .accordion {
-      margin-top: 1rem;
-    }
+.subtitle{
+  color:#555;
+  margin-bottom:1.5rem;
+}
 
-    .accordion-item {
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      margin-bottom: 1rem;
-      overflow: hidden;
-    }
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1.25rem;
+}
 
-    .accordion-header {
-      background: #eef3f9;
-      padding: 1rem;
-      cursor: pointer;
-      font-weight: bold;
-    }
+.card{
+  background:white;
+  border-radius:18px;
+  padding:1.5rem;
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+  border-top:6px solid var(--primary);
+}
 
-    .accordion-content {
-      display: none;
-      padding: 1rem;
-      background: white;
-    }
+.card h3{
+  margin-bottom:0.75rem;
+  color:var(--primary);
+}
 
-    footer {
-      text-align: center;
-      padding: 2rem;
-      color: #666;
-      font-size: 0.9rem;
-    }
+.info-badge{
+  display:inline-block;
+  background:var(--accent);
+  color:var(--primary);
+  padding:0.3rem 0.8rem;
+  border-radius:999px;
+  font-size:0.85rem;
+  font-weight:700;
+  margin-bottom:0.75rem;
+}
 
-    @media (max-width: 768px) {
-      .tabs {
-        flex-direction: column;
-      }
+.schedule-table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:1rem;
+  overflow:hidden;
+  border-radius:16px;
+}
 
-      header h1 {
-        font-size: 1.7rem;
-      }
-    }
-  </style>
+.schedule-table th,
+.schedule-table td{
+  padding:1rem;
+  border-bottom:1px solid #e2e8f0;
+  vertical-align:top;
+}
+
+.schedule-table th{
+  background:var(--primary);
+  color:white;
+  text-align:left;
+}
+
+.schedule-table tr:nth-child(even){
+  background:#fafcff;
+}
+
+.schedule-table tr:hover{
+  background:#fff7fb;
+}
+
+.timeline{
+  position:relative;
+  margin-top:2rem;
+  padding-left:2rem;
+}
+
+.timeline::before{
+  content:"";
+  position:absolute;
+  left:10px;
+  top:0;
+  bottom:0;
+  width:4px;
+  background:var(--primary);
+}
+
+.timeline-item{
+  position:relative;
+  margin-bottom:2rem;
+  background:white;
+  padding:1.25rem;
+  border-radius:16px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+.timeline-item::before{
+  content:"";
+  position:absolute;
+  left:-1.85rem;
+  top:1.4rem;
+  width:18px;
+  height:18px;
+  background:var(--gold);
+  border:4px solid var(--primary);
+  border-radius:50%;
+}
+
+.timeline-item h3{
+  color:var(--primary);
+  margin-bottom:0.5rem;
+}
+
+.highlight{
+  background:#fff3c8;
+  padding:0.2rem 0.5rem;
+  border-radius:8px;
+  font-weight:700;
+}
+
+.download-panel{
+  background:linear-gradient(135deg,#fff,#fcecf1);
+  border:2px dashed var(--secondary);
+  border-radius:20px;
+  padding:2rem;
+  text-align:center;
+}
+
+.download-panel h3{
+  color:var(--primary);
+  margin-bottom:1rem;
+}
+
+.download-btn{
+  display:inline-block;
+  text-decoration:none;
+  background:var(--primary);
+  color:white;
+  padding:1rem 1.5rem;
+  border-radius:999px;
+  font-weight:700;
+  margin-top:1rem;
+  transition:0.3s;
+}
+
+.download-btn:hover{
+  transform:translateY(-2px);
+  background:#65172f;
+}
+
+.accordion-item{
+  border-radius:16px;
+  overflow:hidden;
+  margin-bottom:1rem;
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+.accordion-header{
+  background:white;
+  padding:1.2rem;
+  cursor:pointer;
+  font-weight:700;
+  color:var(--primary);
+}
+
+.accordion-content{
+  display:none;
+  padding:1.25rem;
+  background:#fafcff;
+}
+
+.quiz-box{
+  background:white;
+  padding:1.5rem;
+  border-radius:18px;
+  margin-bottom:1.5rem;
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+.quiz-box button{
+  display:block;
+  width:100%;
+  border:none;
+  background:#edf2f7;
+  padding:0.9rem;
+  margin-top:0.75rem;
+  border-radius:12px;
+  cursor:pointer;
+  text-align:left;
+  transition:0.25s;
+  font-weight:500;
+}
+
+.quiz-box button:hover{
+  background:#d9e5f5;
+}
+
+.feedback{
+  margin-top:1rem;
+  font-weight:700;
+}
+
+.policy-list li{
+  margin-bottom:0.85rem;
+}
+
+.footer{
+  text-align:center;
+  padding:2rem;
+  background:#1d2433;
+  color:white;
+}
+
+.footer a{
+  color:#f7d774;
+}
+
+@media(max-width:900px){
+
+  .schedule-table{
+    display:block;
+    overflow-x:auto;
+  }
+
+  header{
+    padding:3rem 1rem;
+  }
+
+  .nav-container{
+    justify-content:flex-start;
+    overflow-x:auto;
+    flex-wrap:nowrap;
+  }
+}
+</style>
 </head>
+
 <body>
 
 <header>
-  <h1>MATH 176: Instructor Addendum Interactive Module</h1>
+  <h1>MATH 176 – Business Calculus Applications</h1>
+
   <p>
-    Welcome to your interactive guide for Business Calculus (MATH 176). This module explains the course structure,
-    grading policies, schedule, expectations, assignments, and important success strategies for Summer II 2026.
+    Welcome to the interactive instructor addendum for Summer II 2026.
+    This enhanced course guide helps students navigate expectations,
+    schedules, assessments, tutoring resources, policies, and success
+    strategies in a modern interactive format.
   </p>
+
+  <div class="hero-buttons">
+    <a class="btn-primary" href="#overview">Explore the Course</a>
+
+    <a class="btn-outline"
+       href="Math 176_suII_2026_instructor_addendum.pdf"
+       download>
+       Download PDF Addendum
+    </a>
+  </div>
 </header>
+
+<nav>
+  <div class="nav-container">
+    <button class="nav-btn active" onclick="showSection(event,'overview')">Overview</button>
+    <button class="nav-btn" onclick="showSection(event,'schedule')">Schedule</button>
+    <button class="nav-btn" onclick="showSection(event,'grading')">Grading</button>
+    <button class="nav-btn" onclick="showSection(event,'policies')">Policies</button>
+    <button class="nav-btn" onclick="showSection(event,'support')">Support</button>
+    <button class="nav-btn" onclick="showSection(event,'quiz')">Self-Check Quiz</button>
+  </div>
+</nav>
 
 <div class="container">
 
-  <div class="tabs">
-    <button class="tab-btn active" onclick="openTab(event, 'overview')">Course Overview</button>
-    <button class="tab-btn" onclick="openTab(event, 'schedule')">Schedule</button>
-    <button class="tab-btn" onclick="openTab(event, 'grading')">Grading & Policies</button>
-    <button class="tab-btn" onclick="openTab(event, 'success')">Success Tips</button>
-    <button class="tab-btn" onclick="openTab(event, 'quiz')">Self-Check Quiz</button>
-  </div>
+  <!-- OVERVIEW -->
+  <section id="overview" class="section active">
 
-  <div id="overview" class="tab-content active">
-    <h2>Course Overview</h2>
-    <p>
-      This course introduces students to <strong>Business Calculus Applications</strong>, focusing on limits,
-      derivatives, optimization, and integration with real-world business applications.
-    </p>
+    <div class="glass-card">
+      <div class="info-badge">Summer II 2026</div>
+      <h2 class="section-title">Course Overview</h2>
 
-    <div class="card-grid">
-      <div class="card">
-        <h3>📍 Meeting Information</h3>
-        <p><strong>Days:</strong> Monday & Wednesday</p>
-        <p><strong>Time:</strong> 9:00 AM – 11:50 AM</p>
-        <p><strong>Location:</strong> MAS 210</p>
-      </div>
+      <p class="subtitle">
+        Business Calculus connects mathematics to economics, business decisions,
+        optimization, growth models, rates of change, consumer surplus,
+        and real-world applications.
+      </p>
 
-      <div class="card">
-        <h3>📚 Course Modality</h3>
-        <p>This is an <strong>in-person course</strong> with online videos and online homework integrated into instruction.</p>
-      </div>
+      <div class="grid">
 
-      <div class="card">
-        <h3>🧠 Main Topics</h3>
-        <ul>
-          <li>Limits & Continuity</li>
-          <li>Derivatives</li>
-          <li>Optimization</li>
-          <li>Antiderivatives & Integrals</li>
-          <li>Business Applications</li>
-        </ul>
+        <div class="card">
+          <h3>👩‍🏫 Instructor Information</h3>
+          <p><strong>Instructor:</strong> Karina Ochs</p>
+          <p><strong>Communication:</strong> Use the Canvas Inbox tool to contact the instructor.</p>
+          <p><strong>Section:</strong> MATH 176-500RL</p>
+        </div>
+
+        <div class="card">
+          <h3>📍 Meeting Information</h3>
+          <p><strong>Days:</strong> Monday & Wednesday</p>
+          <p><strong>Time:</strong> 9:00 AM – 11:50 AM</p>
+          <p><strong>Room:</strong> MAS 210</p>
+        </div>
+
+        <div class="card">
+          <h3>📚 Course Modality</h3>
+          <p>
+            This course is taught <strong>in person</strong> and includes:
+          </p>
+          <ul>
+            <li>Interactive lectures</li>
+            <li>Online instructional videos</li>
+            <li>Canvas assignments</li>
+            <li>Electronic homework submission</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>🧠 Main Topics</h3>
+          <ul>
+            <li>Limits & Continuity</li>
+            <li>Derivatives</li>
+            <li>Optimization</li>
+            <li>Exponential & Log Functions</li>
+            <li>Integrals & Area</li>
+            <li>Consumer & Producer Surplus</li>
+          </ul>
+        </div>
+
       </div>
     </div>
 
-    <h3>What Makes This Course Unique?</h3>
-    <p>
-      Business Calculus connects mathematics to economics, business decision-making, revenue analysis,
-      cost modeling, optimization, consumer surplus, and more.
-    </p>
+    <div class="download-panel">
+      <h3>Prefer a Traditional PDF?</h3>
 
-    <div class="accordion">
-      <div class="accordion-item">
-        <div class="accordion-header">What technology will I use?</div>
-        <div class="accordion-content">
+      <p>
+        Students may download the complete instructor addendum as a PDF file
+        instead of navigating through the interactive webpage.
+      </p>
+
+      <a class="download-btn"
+         href="Math 176_suII_2026_instructor_addendum.pdf"
+         download>
+         ⬇ Download the Instructor Addendum PDF
+      </a>
+    </div>
+
+  </section>
+
+  <!-- SCHEDULE -->
+  <section id="schedule" class="section">
+
+    <div class="glass-card">
+      <h2 class="section-title">Tentative Course Schedule</h2>
+
+      <p class="subtitle">
+        Summer II moves quickly. Students should stay current with assignments,
+        quizzes, and exam preparation.
+      </p>
+
+      <table class="schedule-table">
+        <tr>
+          <th>Class</th>
+          <th>Date</th>
+          <th>Topics & Assessments</th>
+        </tr>
+
+        <tr>
+          <td>1</td>
+          <td>6/1</td>
+          <td>
+            Appendix A & B: Algebra Review Part I<br>
+            Appendix D: Business Applications Review<br>
+            Section 1.1: Evaluating Limits Graphically & Numerically
+          </td>
+        </tr>
+
+        <tr>
+          <td>2</td>
+          <td>6/3</td>
+          <td>
+            Appendix C: Algebra Review Part II<br>
+            Section 1.2: Evaluating Limits Algebraically<br>
+            Section 1.3: Limits at Infinity
+          </td>
+        </tr>
+
+        <tr>
+          <td>3</td>
+          <td>6/8</td>
+          <td>
+            Section 1.4: Continuity<br>
+            <span class="highlight">Quiz 1</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td>4</td>
+          <td>6/10</td>
+          <td>
+            Sections 2.1 – 2.3: Average & Instantaneous Rate of Change
+          </td>
+        </tr>
+
+        <tr>
+          <td>5</td>
+          <td>6/15</td>
+          <td>
+            Sections 2.3 – 2.6: Slopes of Curves & Applications<br>
+            <span class="highlight">Quiz 2</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td>6</td>
+          <td>6/17</td>
+          <td>
+            <span class="highlight">Test 1</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td>7–13</td>
+          <td>6/22 – 7/13</td>
+          <td>
+            Derivative formulas, chain rule, optimization,
+            exponential & logarithmic functions
+          </td>
+        </tr>
+
+        <tr>
+          <td>13</td>
+          <td>7/13</td>
+          <td>
+            <span class="highlight">Test 2</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td>14–20</td>
+          <td>7/15 – 8/5</td>
+          <td>
+            Antiderivatives, definite integrals,
+            area under curves, consumer surplus,
+            income distribution
+          </td>
+        </tr>
+
+        <tr>
+          <td>20</td>
+          <td>8/5</td>
+          <td>
+            <span class="highlight">Test 3</span>
+          </td>
+        </tr>
+      </table>
+
+    </div>
+
+    <div class="glass-card">
+      <h2 class="section-title">Important Semester Dates</h2>
+
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <h3>May 29, 2026</h3>
+          <p>First Day of the Summer II Semester</p>
+        </div>
+
+        <div class="timeline-item">
+          <h3>June 19, 2026</h3>
+          <p>Juneteenth Observed – College Closed</p>
+        </div>
+
+        <div class="timeline-item">
+          <h3>July 3, 2026</h3>
+          <p>Independence Day Holiday – College Closed</p>
+        </div>
+
+        <div class="timeline-item">
+          <h3>July 27, 2026</h3>
+          <p>Last Day to Withdraw from Summer II Classes</p>
+        </div>
+
+        <div class="timeline-item">
+          <h3>August 5, 2026</h3>
+          <p>Last Day of Instruction</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- GRADING -->
+  <section id="grading" class="section">
+
+    <div class="glass-card">
+      <h2 class="section-title">Grading Breakdown</h2>
+
+      <div class="grid">
+
+        <div class="card">
+          <h3>📝 Test 1</h3>
+          <p>25%</p>
+        </div>
+
+        <div class="card">
+          <h3>📝 Test 2</h3>
+          <p>25%</p>
+        </div>
+
+        <div class="card">
+          <h3>📝 Test 3</h3>
+          <p>25%</p>
+        </div>
+
+        <div class="card">
+          <h3>💻 Homework</h3>
+          <p>10%</p>
+        </div>
+
+        <div class="card">
+          <h3>📌 Quizzes</h3>
+          <p>10%</p>
+        </div>
+
+        <div class="card">
+          <h3>📂 Projects</h3>
+          <p>5%</p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="glass-card">
+      <h2 class="section-title">Grade Distribution</h2>
+
+      <table class="schedule-table">
+        <tr>
+          <th>Letter Grade</th>
+          <th>Range</th>
+        </tr>
+
+        <tr><td>A</td><td>90–100</td></tr>
+        <tr><td>A-</td><td>88–89</td></tr>
+        <tr><td>B+</td><td>86–87</td></tr>
+        <tr><td>B</td><td>80–85</td></tr>
+        <tr><td>B-</td><td>78–79</td></tr>
+        <tr><td>C+</td><td>76–77</td></tr>
+        <tr><td>C</td><td>70–75</td></tr>
+        <tr><td>D</td><td>60–69</td></tr>
+        <tr><td>F</td><td>Below 60</td></tr>
+      </table>
+
+      <p style="margin-top:1rem; font-weight:700; color:var(--primary);">
+        A grade of C or better is required to use this course as a prerequisite.
+      </p>
+
+    </div>
+
+  </section>
+
+  <!-- POLICIES -->
+  <section id="policies" class="section">
+
+    <div class="glass-card">
+      <h2 class="section-title">Course Policies</h2>
+
+      <div class="grid">
+
+        <div class="card">
+          <h3>📘 Homework</h3>
+          <ul class="policy-list">
+            <li>Homework is completed online through Canvas.</li>
+            <li>Students must upload handwritten work.</li>
+            <li>Late homework is not accepted.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>📝 Quizzes</h3>
+          <ul class="policy-list">
+            <li>Quizzes are completed during class.</li>
+            <li>Missed quizzes become a zero.</li>
+            <li>No quiz makeups are allowed.</li>
+            <li>Lowest quiz grade is dropped.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>📂 Projects</h3>
+          <ul class="policy-list">
+            <li>Two projects are required.</li>
+            <li>Projects must be submitted electronically.</li>
+            <li>PDF submission format required.</li>
+            <li>No late projects accepted.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>⚖ Academic Honesty</h3>
+          <ul class="policy-list">
+            <li>Students must follow Brookdale's academic conduct policies.</li>
+            <li>Students are responsible for submitted work integrity.</li>
+            <li>No curves are provided on exams.</li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- SUPPORT -->
+  <section id="support" class="section">
+
+    <div class="glass-card">
+      <h2 class="section-title">Student Support Resources</h2>
+
+      <div class="grid">
+
+        <div class="card">
+          <h3>📚 Textbook Information</h3>
           <p>
-            Students will use Canvas for homework, videos, projects, announcements, and accessing the free ebook.
+            The ebook is available free through Canvas.
+            A printed copy may be purchased through the bookstore.
           </p>
         </div>
-      </div>
 
-      <div class="accordion-item">
-        <div class="accordion-header">What support resources are available?</div>
-        <div class="accordion-content">
+        <div class="card">
+          <h3>🧮 Math Lab Support</h3>
           <p>
-            Free tutoring is available through the Math Lab in MAS 204 and through remote tutoring services.
+            Free in-person and remote tutoring is available through the
+            Brookdale Math Lab in MAS 204.
+          </p>
+
+          <p style="margin-top:1rem;">
+            <a href="https://www.brookdalecc.edu/academic-institutes-and-departments/stem-institute-2/mathematics/math-lab/"
+               target="_blank"
+               style="color:var(--primary);font-weight:700;">
+               Visit the Brookdale Math Lab →
+            </a>
           </p>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <div id="schedule" class="tab-content">
-    <h2>Course Timeline & Schedule</h2>
-    <p>
-      The course is fast-paced because Summer II is condensed. Staying current with assignments is essential.
-    </p>
+        <div class="card">
+          <h3>💡 Success Tips</h3>
+          <ul>
+            <li>Practice calculus daily.</li>
+            <li>Review algebra regularly.</li>
+            <li>Attend every class session.</li>
+            <li>Seek tutoring early.</li>
+            <li>Stay current with assignments.</li>
+          </ul>
+        </div>
 
-    <div class="timeline">
-      <div class="timeline-item">
-        <h3>June 1 – June 17</h3>
-        <p>
-          Algebra review, limits, continuity, and introductory derivative concepts.
-          <span class="highlight">Test 1 on June 17</span>
-        </p>
       </div>
 
-      <div class="timeline-item">
-        <h3>June 22 – July 13</h3>
-        <p>
-          Derivative formulas, chain rule, exponential functions, maxima/minima, optimization.
-          <span class="highlight">Test 2 on July 13</span>
-        </p>
+      <div style="margin-top:2rem;">
+
+        <div class="accordion-item">
+          <div class="accordion-header">
+            Why is Business Calculus important?
+          </div>
+
+          <div class="accordion-content">
+            Business Calculus is used in economics, finance, optimization,
+            production analysis, marginal cost/revenue calculations,
+            growth models, and business decision making.
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header">
+            What should I do if I fall behind?
+          </div>
+
+          <div class="accordion-content">
+            Contact your instructor immediately, attend tutoring,
+            review online videos, and complete practice problems consistently.
+          </div>
+        </div>
+
       </div>
 
-      <div class="timeline-item">
-        <h3>July 15 – August 5</h3>
-        <p>
-          Antiderivatives, definite integrals, area under curves, consumer surplus, income distribution.
-          <span class="highlight">Test 3 on August 5</span>
-        </p>
-      </div>
-    </div>
-
-    <h3>Important Semester Dates</h3>
-
-    <table>
-      <tr>
-        <th>Date</th>
-        <th>Event</th>
-      </tr>
-      <tr>
-        <td>May 29, 2026</td>
-        <td>First Day of Summer II Semester</td>
-      </tr>
-      <tr>
-        <td>June 19, 2026</td>
-        <td>College Closed – Juneteenth</td>
-      </tr>
-      <tr>
-        <td>July 3, 2026</td>
-        <td>College Closed – Independence Day Holiday</td>
-      </tr>
-      <tr>
-        <td>July 27, 2026</td>
-        <td>Last Day to Withdraw</td>
-      </tr>
-      <tr>
-        <td>August 5, 2026</td>
-        <td>Last Day of Instruction</td>
-      </tr>
-    </table>
-  </div>
-
-  <div id="grading" class="tab-content">
-    <h2>Grading & Course Policies</h2>
-
-    <table>
-      <tr>
-        <th>Category</th>
-        <th>Weight</th>
-      </tr>
-      <tr>
-        <td>Test 1</td>
-        <td>25%</td>
-      </tr>
-      <tr>
-        <td>Test 2</td>
-        <td>25%</td>
-      </tr>
-      <tr>
-        <td>Test 3</td>
-        <td>25%</td>
-      </tr>
-      <tr>
-        <td>Homework</td>
-        <td>10%</td>
-      </tr>
-      <tr>
-        <td>Quizzes</td>
-        <td>10%</td>
-      </tr>
-      <tr>
-        <td>Projects</td>
-        <td>5%</td>
-      </tr>
-    </table>
-
-    <div class="card-grid">
-      <div class="card">
-        <h3>📝 Exams</h3>
-        <p>
-          All three exams must be completed <strong>in person during class</strong>.
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>📌 Quizzes</h3>
-        <p>
-          Quizzes cannot be made up. The lowest quiz grade is dropped.
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>💻 Homework</h3>
-        <p>
-          Homework is completed online through Canvas and includes uploading handwritten work.
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>📂 Projects</h3>
-        <p>
-          Two projects must be submitted electronically as PDF files.
-        </p>
-      </div>
     </div>
 
-    <h3>Important Academic Policies</h3>
-    <ul>
-      <li>No late homework assignments are accepted.</li>
-      <li>No late projects are accepted.</li>
-      <li>No curves are provided on exams.</li>
-      <li>A grade of <strong>C or better</strong> is required for prerequisite purposes.</li>
-      <li>Students are expected to follow academic honesty policies.</li>
-    </ul>
-  </div>
+  </section>
 
-  <div id="success" class="tab-content">
-    <h2>Strategies for Success</h2>
+  <!-- QUIZ -->
+  <section id="quiz" class="section">
 
-    <div class="card-grid">
-      <div class="card">
-        <h3>⏰ Stay Organized</h3>
-        <p>
-          Summer courses move quickly. Use a calendar to track homework, quizzes, and exam dates.
-        </p>
+    <div class="glass-card">
+      <h2 class="section-title">Self-Check Quiz</h2>
+
+      <div class="quiz-box">
+        <p><strong>1. How many exams are required in this course?</strong></p>
+
+        <button onclick="checkAnswer(this,false)">One exam</button>
+        <button onclick="checkAnswer(this,true)">Three exams</button>
+        <button onclick="checkAnswer(this,false)">Two exams</button>
+        <button onclick="checkAnswer(this,false)">Four exams</button>
+
+        <div class="feedback"></div>
       </div>
 
-      <div class="card">
-        <h3>📖 Practice Daily</h3>
-        <p>
-          Calculus is learned through consistent practice. Work on problems every day.
-        </p>
+      <div class="quiz-box">
+        <p><strong>2. What happens if you miss a quiz?</strong></p>
+
+        <button onclick="checkAnswer(this,false)">You can retake it later</button>
+        <button onclick="checkAnswer(this,true)">The missed quiz becomes a zero</button>
+        <button onclick="checkAnswer(this,false)">It is automatically excused</button>
+        <button onclick="checkAnswer(this,false)">It becomes homework</button>
+
+        <div class="feedback"></div>
       </div>
 
-      <div class="card">
-        <h3>🤝 Use Tutoring Resources</h3>
-        <p>
-          Visit the Math Lab early if you feel confused. Getting help early is the key to success.
-        </p>
+      <div class="quiz-box">
+        <p><strong>3. Which resource provides free tutoring?</strong></p>
+
+        <button onclick="checkAnswer(this,false)">Bookstore</button>
+        <button onclick="checkAnswer(this,false)">Admissions Office</button>
+        <button onclick="checkAnswer(this,true)">Math Lab</button>
+        <button onclick="checkAnswer(this,false)">Registrar</button>
+
+        <div class="feedback"></div>
       </div>
 
-      <div class="card">
-        <h3>🧩 Review Algebra</h3>
-        <p>
-          Strong algebra skills are essential for success in calculus.
-        </p>
+      <div class="quiz-box">
+        <p><strong>4. What grade is required to use MATH 176 as a prerequisite?</strong></p>
+
+        <button onclick="checkAnswer(this,false)">D</button>
+        <button onclick="checkAnswer(this,true)">C or better</button>
+        <button onclick="checkAnswer(this,false)">Any passing grade</button>
+        <button onclick="checkAnswer(this,false)">C-</button>
+
+        <div class="feedback"></div>
       </div>
+
     </div>
 
-    <h3>Common Student Misconceptions</h3>
-
-    <table>
-      <tr>
-        <th>Misconception</th>
-        <th>Reality</th>
-      </tr>
-      <tr>
-        <td>“Calculus is only about memorizing formulas.”</td>
-        <td>Calculus focuses on understanding change, rates, and applications.</td>
-      </tr>
-      <tr>
-        <td>“I can fall behind and catch up later.”</td>
-        <td>Summer courses move too quickly for long delays.</td>
-      </tr>
-      <tr>
-        <td>“Homework is optional practice.”</td>
-        <td>Homework directly supports quiz and exam success.</td>
-      </tr>
-    </table>
-  </div>
-
-  <div id="quiz" class="tab-content">
-    <h2>Self-Check Quiz</h2>
-
-    <div class="quiz-question">
-      <p><strong>1. How many exams are required in this course?</strong></p>
-      <button onclick="checkAnswer(this, false)">Two exams</button>
-      <button onclick="checkAnswer(this, true)">Three exams</button>
-      <button onclick="checkAnswer(this, false)">Four exams</button>
-      <button onclick="checkAnswer(this, false)">One final exam only</button>
-      <div class="feedback"></div>
-    </div>
-
-    <div class="quiz-question">
-      <p><strong>2. What happens if you miss a quiz?</strong></p>
-      <button onclick="checkAnswer(this, false)">You can retake it anytime</button>
-      <button onclick="checkAnswer(this, true)">The quiz grade becomes a zero</button>
-      <button onclick="checkAnswer(this, false)">It automatically becomes extra credit</button>
-      <button onclick="checkAnswer(this, false)">It is replaced with homework</button>
-      <div class="feedback"></div>
-    </div>
-
-    <div class="quiz-question">
-      <p><strong>3. What grade is needed to use this course as a prerequisite?</strong></p>
-      <button onclick="checkAnswer(this, false)">D</button>
-      <button onclick="checkAnswer(this, false)">C-</button>
-      <button onclick="checkAnswer(this, true)">C or better</button>
-      <button onclick="checkAnswer(this, false)">Any passing grade</button>
-      <div class="feedback"></div>
-    </div>
-
-    <div class="quiz-question">
-      <p><strong>4. Which resource provides free tutoring?</strong></p>
-      <button onclick="checkAnswer(this, false)">Library</button>
-      <button onclick="checkAnswer(this, false)">Admissions Office</button>
-      <button onclick="checkAnswer(this, true)">Math Lab</button>
-      <button onclick="checkAnswer(this, false)">Bookstore</button>
-      <div class="feedback"></div>
-    </div>
-
-    <div class="quiz-question">
-      <p><strong>5. Why is staying current important in Summer II?</strong></p>
-      <button onclick="checkAnswer(this, false)">Because homework is optional</button>
-      <button onclick="checkAnswer(this, true)">The course moves very quickly</button>
-      <button onclick="checkAnswer(this, false)">There are no exams</button>
-      <button onclick="checkAnswer(this, false)">Attendance is not important</button>
-      <div class="feedback"></div>
-    </div>
-  </div>
+  </section>
 
 </div>
 
-<footer>
-  Interactive module developed for MATH 176 – Business Calculus Applications | Brookdale Community College
-</footer>
+<div class="footer">
+  <p>
+    MATH 176 – Calculus Business Applications | Brookdale Community College
+  </p>
+
+  <p style="margin-top:0.5rem;">
+    Designed as an interactive student-friendly course addendum for Summer II 2026.
+  </p>
+</div>
 
 <script>
-  function openTab(evt, tabName) {
-    const tabcontent = document.getElementsByClassName('tab-content');
-    for (let i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].classList.remove('active');
+
+function showSection(evt,sectionId){
+
+  const sections=document.querySelectorAll('.section');
+  sections.forEach(section=>section.classList.remove('active'));
+
+  const buttons=document.querySelectorAll('.nav-btn');
+  buttons.forEach(button=>button.classList.remove('active'));
+
+  document.getElementById(sectionId).classList.add('active');
+  evt.currentTarget.classList.add('active');
+}
+
+const accordionHeaders=document.querySelectorAll('.accordion-header');
+
+accordionHeaders.forEach(header=>{
+
+  header.addEventListener('click',()=>{
+
+    const content=header.nextElementSibling;
+
+    if(content.style.display==='block'){
+      content.style.display='none';
     }
-
-    const tabbuttons = document.getElementsByClassName('tab-btn');
-    for (let i = 0; i < tabbuttons.length; i++) {
-      tabbuttons[i].classList.remove('active');
+    else{
+      content.style.display='block';
     }
-
-    document.getElementById(tabName).classList.add('active');
-    evt.currentTarget.classList.add('active');
-  }
-
-  function checkAnswer(button, correct) {
-    const feedback = button.parentElement.querySelector('.feedback');
-
-    if (correct) {
-      feedback.innerHTML = '✅ Correct!';
-      feedback.style.color = 'green';
-    } else {
-      feedback.innerHTML = '❌ Not quite. Try again!';
-      feedback.style.color = 'crimson';
-    }
-  }
-
-  const accordionHeaders = document.querySelectorAll('.accordion-header');
-
-  accordionHeaders.forEach(header => {
-    header.addEventListener('click', () => {
-      const content = header.nextElementSibling;
-      content.style.display = content.style.display === 'block' ? 'none' : 'block';
-    });
   });
+});
+
+function checkAnswer(button,correct){
+
+  const feedback=button.parentElement.querySelector('.feedback');
+
+  if(correct){
+    feedback.innerHTML='✅ Correct! Great job.';
+    feedback.style.color='green';
+  }
+  else{
+    feedback.innerHTML='❌ Not quite. Try again.';
+    feedback.style.color='crimson';
+  }
+}
+
 </script>
 
 </body>
