@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Lesson: Evaluating Limits Graphically and Numerically</title>
+  <style>
+    :root {
+      --blue: #2f5d8c;
+      --light-blue: #dfeaf5;
+      --gray: #e5e7eb;
+      --dark-gray: #374151;
+      --background: #f8fafc;
+      --white: #ffffff;
+      --success: #166534;
+      --success-bg: #dcfce7;
+      --error: #991b1b;
+      --error-bg: #fee2e2;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--background);
+      color: #111827;
+      line-height: 1.6;
+    }
+
+    header {
+      background: var(--blue);
+      color: var(--white);
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    header h1 {
+      margin-bottom: 0.5rem;
+      font-size: 2rem;
+    }
+
+    header p {
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    .lesson-goals {
+      background: var(--white);
+      border-left: 6px solid var(--blue);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .tab-button {
+      background: var(--gray);
+      border: 2px solid #cbd5e1;
+      color: #111827;
+      padding: 0.8rem 1rem;
+      cursor: pointer;
+      border-radius: 8px 8px 0 0;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .tab-button:hover,
+    .tab-button:focus {
+      background: #d1d5db;
+      outline: 3px solid #93c5fd;
+    }
+
+    .tab-button.active {
+      background: var(--blue);
+      color: white;
+      border-color: var(--blue);
+    }
+
+    .tab-content {
+      display: none;
+      background: var(--white);
+      padding: 1.5rem;
+      border-radius: 0 10px 10px 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    h2 {
+      color: var(--blue);
+      margin-top: 0;
+    }
+
+    .definition {
+      background: var(--light-blue);
+      padding: 1rem;
+      border-left: 5px solid var(--blue);
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+
+    .example-box {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .compare-card {
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 1rem;
+      background: #f8fafc;
+    }
+
+    .compare-card h3 {
+      margin-top: 0;
+      color: var(--blue);
+    }
+
+    .graph-container {
+      overflow-x: auto;
+      margin: 1rem 0;
+      text-align: center;
+    }
+
+    svg {
+      max-width: 100%;
+      height: auto;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+    }
+
+    .quiz-section {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .question {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #d1d5db;
+    }
+
+    .question h3 {
+      color: var(--dark-gray);
+    }
+
+    .options button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      margin: 0.5rem 0;
+      padding: 0.8rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      background: #f9fafb;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .options button:hover,
+    .options button:focus {
+      background: #e0f2fe;
+      outline: 3px solid #93c5fd;
+    }
+
+    .feedback {
+      margin-top: 0.75rem;
+      padding: 0.8rem;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .correct {
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid #86efac;
+    }
+
+    .incorrect {
+      background: var(--error-bg);
+      color: var(--error);
+      border: 1px solid #fca5a5;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.95rem;
+      color: #4b5563;
+    }
+
+    @media (max-width: 700px) {
+      .tabs {
+        flex-direction: column;
+      }
+
+      .tab-button {
+        border-radius: 8px;
+      }
+
+      .tab-content {
+        border-radius: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Evaluating Limits Graphically and Numerically</h1>
+    <p>
+      In Business Calculus, limits help us understand how a quantity behaves as it gets close to a value.
+      In this lesson, you will learn how to estimate limits using tables and graphs,
+      identify when limits exist, and recognize common misconceptions.
+    </p>
+  </header>
+
+  <main>
+    <section class="lesson-goals" aria-labelledby="goals-heading">
+      <h2 id="goals-heading">Learning Goals</h2>
+      <ul>
+        <li>Define a limit using student-friendly language.</li>
+        <li>Estimate limits from graphs and tables.</li>
+        <li>Distinguish between a function value and a limit.</li>
+        <li>Recognize situations where a limit does not exist.</li>
+      </ul>
+    </section>
+
+    <nav class="tabs" aria-label="Lesson Sections">
+      <button class="tab-button active" aria-controls="core" aria-selected="true" id="tab-core">1. Core Idea</button>
+      <button class="tab-button" aria-controls="compare" aria-selected="false" id="tab-compare">2. Compare & Contrast</button>
+      <button class="tab-button" aria-controls="worked" aria-selected="false" id="tab-worked">3. Worked Example</button>
+    </nav>
+
+    <section id="core" class="tab-content active" role="tabpanel" aria-labelledby="tab-core">
+      <h2>What Is a Limit?</h2>
+
+      <p>
+        A <strong>limit</strong> describes the value that a function is getting close to.
+        The function may or may not actually equal that value.
+      </p>
+
+      <div class="definition">
+        <p>
+          When we write:
+        </p>
+        <p><strong>lim<sub>x→2</sub> f(x) = 4</strong></p>
+        <p>
+          we mean that as x gets closer and closer to 2, the y-values get closer and closer to 4.
+        </p>
+      </div>
+
+      <h3>Reading a Limit from a Table</h3>
+
+      <table style="width:100%; border-collapse: collapse; margin: 1rem 0;">
+        <caption style="text-align:left; font-weight:bold; margin-bottom:0.5rem;">
+          Values approaching x = 2
+        </caption>
+        <thead>
+          <tr style="background:#dbeafe;">
+            <th style="border:1px solid #cbd5e1; padding:0.5rem;">x</th>
+            <th style="border:1px solid #cbd5e1; padding:0.5rem;">f(x)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="border:1px solid #cbd5e1; padding:0.5rem;">1.9</td><td style="border:1px solid #cbd5e1; padding:0.5rem;">3.8</td></tr>
+          <tr><td style="border:1px solid #cbd5e1; padding:0.5rem;">1.99</td><td style="border:1px solid #cbd5e1; padding:0.5rem;">3.98</td></tr>
+          <tr><td style="border:1px solid #cbd5e1; padding:0.5rem;">2.01</td><td style="border:1px solid #cbd5e1; padding:0.5rem;">4.02</td></tr>
+          <tr><td style="border:1px solid #cbd5e1; padding:0.5rem;">2.1</td><td style="border:1px solid #cbd5e1; padding:0.5rem;">4.2</td></tr>
+        </tbody>
+      </table>
+
+      <p>
+        Notice that the y-values are getting close to 4 from both sides.
+        Therefore, the limit is 4.
+      </p>
+
+      <div class="graph-container">
+        <svg width="520" height="320" role="img" aria-label="Graph showing a function approaching the point 2 comma 4 with an open circle.">
+          <line x1="50" y1="270" x2="470" y2="270" stroke="#000" stroke-width="2" />
+          <line x1="260" y1="20" x2="260" y2="290" stroke="#000" stroke-width="2" />
+
+          <text x="475" y="275" font-size="14">x</text>
+          <text x="268" y="25" font-size="14">y</text>
+
+          <line x1="160" y1="265" x2="160" y2="275" stroke="#000" />
+          <line x1="360" y1="265" x2="360" y2="275" stroke="#000" />
+          <text x="155" y="295" font-size="12">-2</text>
+          <text x="355" y="295" font-size="12">2</text>
+
+          <line x1="255" y1="170" x2="265" y2="170" stroke="#000" />
+          <text x="272" y="175" font-size="12">4</text>
+
+          <polyline points="80,250 120,235 160,220 200,205 240,190 280,150 320,130 360,110 400,90 440,70"
+                    fill="none" stroke="#2f5d8c" stroke-width="3" />
+
+          <circle cx="360" cy="110" r="7" fill="#fff" stroke="#c1121f" stroke-width="3" />
+        </svg>
+      </div>
+
+      <p>
+        The open circle shows that the function may not actually include the point.
+        However, the graph still approaches that y-value.
+      </p>
+    </section>
+
+    <section id="compare" class="tab-content" role="tabpanel" aria-labelledby="tab-compare">
+      <h2>Compare & Contrast</h2>
+
+      <div class="compare-grid">
+        <article class="compare-card">
+          <h3>Limit Exists</h3>
+          <p>
+            A limit exists when the graph approaches the same y-value from the left and right side.
+          </p>
+
+          <div class="graph-container">
+            <svg width="320" height="260" role="img" aria-label="Graph where left and right sides approach the same value.">
+              <line x1="30" y1="220" x2="290" y2="220" stroke="#000" stroke-width="2" />
+              <line x1="160" y1="20" x2="160" y2="240" stroke="#000" stroke-width="2" />
+
+              <line x1="110" y1="215" x2="110" y2="225" stroke="#000" />
+              <line x1="210" y1="215" x2="210" y2="225" stroke="#000" />
+              <text x="106" y="240" font-size="12">-1</text>
+              <text x="206" y="240" font-size="12">1</text>
+
+              <line x1="155" y1="120" x2="165" y2="120" stroke="#000" />
+              <text x="170" y="124" font-size="12">3</text>
+
+              <polyline points="50,190 80,170 110,150 130,135 150,123"
+                        fill="none" stroke="#2f5d8c" stroke-width="3" />
+
+              <polyline points="170,123 190,135 220,150 250,170 280,190"
+                        fill="none" stroke="#2f5d8c" stroke-width="3" />
+
+              <circle cx="160" cy="120" r="7" fill="#fff" stroke="#c1121f" stroke-width="3" />
+            </svg>
+          </div>
+
+          <p>
+            Even though there is an open circle, both sides approach the same value.
+          </p>
+        </article>
+
+        <article class="compare-card">
+          <h3>Limit Does Not Exist</h3>
+          <p>
+            A limit does not exist when the left side and right side approach different values.
+          </p>
+
+          <div class="graph-container">
+            <svg width="320" height="260" role="img" aria-label="Graph where left and right sides approach different values.">
+              <line x1="30" y1="220" x2="290" y2="220" stroke="#000" stroke-width="2" />
+              <line x1="160" y1="20" x2="160" y2="240" stroke="#000" stroke-width="2" />
+
+              <line x1="110" y1="215" x2="110" y2="225" stroke="#000" />
+              <line x1="210" y1="215" x2="210" y2="225" stroke="#000" />
+              <text x="106" y="240" font-size="12">-1</text>
+              <text x="206" y="240" font-size="12">1</text>
+
+              <line x1="155" y1="90" x2="165" y2="90" stroke="#000" />
+              <text x="170" y="94" font-size="12">5</text>
+
+              <line x1="155" y1="150" x2="165" y2="150" stroke="#000" />
+              <text x="170" y="154" font-size="12">2</text>
+
+              <polyline points="50,180 80,165 110,145 130,130 150,93"
+                        fill="none" stroke="#2f5d8c" stroke-width="3" />
+
+              <polyline points="170,153 190,165 220,178 250,190 280,200"
+                        fill="none" stroke="#2f5d8c" stroke-width="3" />
+
+              <circle cx="160" cy="90" r="7" fill="#fff" stroke="#c1121f" stroke-width="3" />
+              <circle cx="160" cy="150" r="7" fill="#fff" stroke="#c1121f" stroke-width="3" />
+            </svg>
+          </div>
+
+          <p>
+            The graph approaches different y-values from each side, so the limit does not exist.
+          </p>
+        </article>
+      </div>
+
+      <div class="example-box">
+        <h3>Common Misconception</h3>
+        <p>
+          Students often think the limit and the function value must be the same.
+          This is not always true.
+        </p>
+
+        <p>
+          Example:
+        </p>
+
+        <ul>
+          <li>The graph approaches y = 4.</li>
+          <li>But the actual function value at x = 2 might be undefined or equal to another number.</li>
+        </ul>
+
+        <p>
+          Limits describe what the graph is approaching, not necessarily the exact point shown.
+        </p>
+      </div>
+    </section>
+
+    <section id="worked" class="tab-content" role="tabpanel" aria-labelledby="tab-worked">
+      <h2>Worked Example</h2>
+
+      <div class="example-box">
+        <h3>Problem</h3>
+        <p>
+          Evaluate the following limit using the table and graph:
+        </p>
+
+        <p><strong>lim<sub>x→3</sub> (x + 2)</strong></p>
+      </div>
+
+      <h3>Step 1: Create a Table</h3>
+
+      <table style="width:100%; border-collapse: collapse; margin: 1rem 0;">
+        <thead>
+          <tr style="background:#dbeafe;">
+            <th style="border:1px solid #cbd5e1; padding:0.5rem;">x</th>
+            <th style="border:1px solid #cbd5e1; padding:0.5rem;">x + 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="border:1px solid #cbd5e1; padding:0.5rem;">2.9</td><td style="border:1px solid #cbd5e1; padding:0.5rem;">4.9</td></tr>
+          <tr><td style="border:1px solid #cbd5e1; padding:0.5rem;">2.99</td><td style="border:1px solid #cbd5e1; padding:0.5rem;">4.99</td></tr>
+          <tr><td style="border:1px solid #cbd5e1; padding:0.5rem;">3.01</td><td style="border:1px solid #cbd5e1; padding:0.5rem;">5.01</td></tr>
+          <tr><td style="border:1px solid #cbd5e1; padding:0.5rem;">3.1</td><td style="border:1px solid #cbd5e1; padding:0.5rem;">5.1</td></tr>
+        </tbody>
+      </table>
+
+      <p>
+        The outputs are getting closer to 5.
+      </p>
+
+      <h3>Step 2: Analyze the Graph</h3>
+
+      <div class="graph-container">
+        <svg width="520" height="320" role="img" aria-label="Graph of y equals x plus 2 approaching 5 when x approaches 3.">
+          <line x1="50" y1="270" x2="470" y2="270" stroke="#000" stroke-width="2" />
+          <line x1="70" y1="20" x2="70" y2="290" stroke="#000" stroke-width="2" />
+
+          <text x="475" y="275" font-size="14">x</text>
+          <text x="78" y="25" font-size="14">y</text>
+
+          <line x1="170" y1="265" x2="170" y2="275" stroke="#000" />
+          <line x1="270" y1="265" x2="270" y2="275" stroke="#000" />
+          <line x1="370" y1="265" x2="370" y2="275" stroke="#000" />
+
+          <text x="165" y="295" font-size="12">1</text>
+          <text x="265" y="295" font-size="12">3</text>
+          <text x="365" y="295" font-size="12">5</text>
+
+          <line x1="65" y1="220" x2="75" y2="220" stroke="#000" />
+          <line x1="65" y1="170" x2="75" y2="170" stroke="#000" />
+          <line x1="65" y1="120" x2="75" y2="120" stroke="#000" />
+
+          <text x="40" y="225" font-size="12">1</text>
+          <text x="40" y="175" font-size="12">3</text>
+          <text x="40" y="125" font-size="12">5</text>
+
+          <polyline points="70,220 120,195 170,170 220,145 270,120 320,95 370,70"
+                    fill="none" stroke="#2f5d8c" stroke-width="3" />
+
+          <circle cx="270" cy="120" r="6" fill="#2f5d8c" />
+        </svg>
+      </div>
+
+      <p>
+        As x approaches 3, the graph approaches 5.
+      </p>
+
+      <h3>Step 3: State the Limit</h3>
+
+      <div class="definition">
+        <p><strong>lim<sub>x→3</sub> (x + 2) = 5</strong></p>
+      </div>
+
+      <p>
+        The limit is 5 because the function values get closer and closer to 5 from both sides.
+      </p>
+    </section>
+
+    <section class="quiz-section" aria-labelledby="quiz-heading">
+      <h2 id="quiz-heading">Self-Check Quiz</h2>
+
+      <div class="question">
+        <h3>1. What does a limit describe?</h3>
+        <div class="options">
+          <button onclick="checkAnswer(this, false, 'A limit is not always the exact function value.')">The exact value of the function at every point</button>
+          <button onclick="checkAnswer(this, true, 'Correct! A limit describes the value the function approaches.')">The value a function approaches</button>
+          <button onclick="checkAnswer(this, false, 'A limit focuses on behavior near a point, not slopes.')">The slope of a line</button>
+          <button onclick="checkAnswer(this, false, 'Limits can involve many different types of functions.')">Only polynomial functions</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+
+      <div class="question">
+        <h3>2. If the left-hand and right-hand sides approach different values, what happens?</h3>
+        <div class="options">
+          <button onclick="checkAnswer(this, false, 'Different values from each side means the limit does not exist.')">The limit equals zero</button>
+          <button onclick="checkAnswer(this, true, 'Correct! The limit does not exist when the sides disagree.')">The limit does not exist</button>
+          <button onclick="checkAnswer(this, false, 'The function may still exist even if the limit does not.')">The function disappears</button>
+          <button onclick="checkAnswer(this, false, 'The limit is not automatically undefined.')">The limit is undefined only because of division</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+
+      <div class="question">
+        <h3>3. What is the limit of x + 1 as x approaches 2?</h3>
+        <div class="options">
+          <button onclick="checkAnswer(this, false, 'Substitute x = 2 mentally to see what the values approach.')">2</button>
+          <button onclick="checkAnswer(this, true, 'Correct! As x approaches 2, x + 1 approaches 3.')">3</button>
+          <button onclick="checkAnswer(this, false, 'The expression approaches 3, not 1.')">1</button>
+          <button onclick="checkAnswer(this, false, 'The limit exists and is not undefined.')">Undefined</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+
+      <div class="question">
+        <h3>4. Can a limit exist even if the function is undefined at that point?</h3>
+        <div class="options">
+          <button onclick="checkAnswer(this, true, 'Correct! A graph can approach a value even if the point is missing.')">Yes</button>
+          <button onclick="checkAnswer(this, false, 'Limits can exist even when the function is undefined at a point.')">No</button>
+          <button onclick="checkAnswer(this, false, 'A limit does not depend only on the function value.')">Only for linear functions</button>
+          <button onclick="checkAnswer(this, false, 'Open circles often still allow a limit to exist.')">Only if the graph has no open circles</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Interactive Business Calculus Mini-Lesson • Designed for community college students
+  </footer>
+
+  <script>
+    const tabs = document.querySelectorAll('.tab-button');
+    const contents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(btn => {
+          btn.classList.remove('active');
+          btn.setAttribute('aria-selected', 'false');
+        });
+
+        contents.forEach(content => {
+          content.classList.remove('active');
+        });
+
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+
+        const selectedContent = document.getElementById(tab.getAttribute('aria-controls'));
+        selectedContent.classList.add('active');
+      });
+
+      tab.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowRight') {
+          const nextTab = tabs[(index + 1) % tabs.length];
+          nextTab.focus();
+          nextTab.click();
+        }
+
+        if (event.key === 'ArrowLeft') {
+          const prevTab = tabs[(index - 1 + tabs.length) % tabs.length];
+          prevTab.focus();
+          prevTab.click();
+        }
+      });
+    });
+
+    function checkAnswer(button, isCorrect, explanation) {
+      const question = button.closest('.question');
+      const feedback = question.querySelector('.feedback');
+
+      feedback.style.display = 'block';
+      feedback.className = 'feedback ' + (isCorrect ? 'correct' : 'incorrect');
+
+      if (isCorrect) {
+        feedback.innerHTML = '<strong>Correct!</strong> ' + explanation;
+      } else {
+        feedback.innerHTML = '<strong>Not quite.</strong> ' + explanation;
+      }
+    }
+  </script>
+</body>
+</html>
